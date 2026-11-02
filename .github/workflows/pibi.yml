@@ -1,0 +1,84 @@
+name: Build Pibi
+
+on:
+  push:
+    branches: [daddy]
+    paths:
+      - pibi/**
+      - .github/workflows/pibi.yml
+  pull_request:
+    branches: [daddy]
+    paths:
+      - pibi/**
+      - .github/workflows/pibi.yml
+  schedule:
+    - cron: '05 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pibi-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: pibi
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/pixelcmtd/pibi
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Free build space
+        uses: ublue-os/remove-unwanted-software@v9
+
+      - name: Check signing key
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/daddy'
+        env:
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+        run: test -n "$SIGNING_SECRET"
+
+      - name: Build image
+        run: podman build --pull --tag localhost/pibi:latest --file Containerfile .
+
+      - name: Rechunk image
+        run: ./rechunk.sh
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/daddy'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish image
+        id: publish
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/daddy'
+        run: |
+          set -euo pipefail
+          podman push --digestfile=/tmp/pibi-digest localhost/pibi:latest "$IMAGE:latest"
+          echo "digest=$(cat /tmp/pibi-digest)" >> "$GITHUB_OUTPUT"
+
+      - name: Install cosign
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/daddy'
+        uses: sigstore/cosign-installer@main
+
+      - name: Sign image
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/daddy'
+        env:
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          DIGEST: ${{ steps.publish.outputs.digest }}
+        run: |
+          cosign sign -y --new-bundle-format=false --use-signing-config=false \
+            --key env://COSIGN_PRIVATE_KEY "$IMAGE@$DIGEST"
+          cosign verify --key cosign.pub "$IMAGE@$DIGEST"

@@ -1,0 +1,5 @@
+.gitignore
+cosign.*
+!cosign.pub
+README.md
+rechunk.sh

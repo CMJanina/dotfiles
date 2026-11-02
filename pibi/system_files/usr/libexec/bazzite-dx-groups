@@ -1,0 +1,22 @@
+#!/bin/bash
+# Adapted for Pibi from Bazzite DX, 2026-10-26.
+set -euo pipefail
+
+state=/etc/ublue/dx-groups
+if [[ -f $state && $(cat "$state") == 2 ]]; then
+    exit 0
+fi
+
+mapfile -t users < <(getent group wheel | cut -d: -f4 | tr ',' '\n')
+for group in libvirt dialout; do
+    if ! grep -q "^$group:" /etc/group; then
+        grep "^$group:" /usr/lib/group >> /etc/group
+    fi
+    for user in "${users[@]}"; do
+        [[ -n $user ]] || continue
+        usermod -aG "$group" "$user"
+    done
+done
+
+mkdir -p /etc/ublue
+echo 2 > "$state"

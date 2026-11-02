@@ -1,0 +1,19 @@
+FROM scratch AS ctx
+COPY build.sh trust.sh cosign.pub /
+COPY system_files /system_files
+
+FROM ghcr.io/ublue-os/bazzite:testing
+
+LABEL org.opencontainers.image.title="pibi" \
+    org.opencontainers.image.description="Pixie's Bazzite image" \
+    org.opencontainers.image.source="https://github.com/pixelcmtd/dotfiles" \
+    org.opencontainers.image.vendor="pixelcmtd"
+
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=tmpfs,target=/tmp \
+    /ctx/build.sh
+
+COPY LICENSE /usr/share/licenses/pibi/LICENSE
+
+# Preserve the builder's resolver and container metadata mounts under /run.
+RUN find /boot /run -mindepth 1 ! -path '/run/systemd*' ! -path '/run/.containerenv' -delete && bootc container lint
