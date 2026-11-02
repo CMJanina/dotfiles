@@ -12,7 +12,7 @@ increase idle power use.
 From `pibi/`:
 
 ```sh
-just build
+podman build --pull --tag localhost/pibi:latest --file Containerfile .
 ```
 
 CI builds PRs and publishes `ghcr.io/pixelcmtd/pibi:latest` daily and on
