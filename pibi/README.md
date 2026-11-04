@@ -1,8 +1,8 @@
 # Pibi
 
 Based on `ghcr.io/ublue-os/bazzite:testing`, with DX development/ROCm tools,
-Linux VMs and GPU passthrough, Ghostty, Helium and Podman. KDE desktop, without
-Gaming Mode defaults.
+Linux VMs and GPU passthrough, Ghostty, Helium and Podman. KDE desktop, with an
+optional Hyprland session and without Gaming Mode defaults.
 
 AMDGPU uses `runpm=0` to keep the GPU awake when the KVM switches away. This can
 increase idle power use.
@@ -47,6 +47,26 @@ After rebooting, install the Flatpak defaults:
 ```sh
 ujust install-flatpaks
 ```
+
+## Sayso
+
+`ujust install-flatpaks` includes Sayso. Run `ujust install-sayso` to install it
+separately. Launch Sayso, download a speech model, and use Ctrl+Alt+Space.
+Version 0.14.1 is pinned; `flatpak update` cannot update its upstream bundle.
+
+## Hyprland
+
+After updating and rebooting, select **Hyprland (uwsm-managed)** at login.
+Select **Plasma** to return to KDE.
+
+- Super+Enter opens Ghostty; Super+Space opens the app launcher.
+- Super+Q closes a window; Super+arrows changes focus.
+- Super+1 through 0 switches workspaces; add Shift to move a window there.
+- Super+L locks; Super+Shift+E logs out. Idle locking starts after 10 minutes.
+
+Defaults are in `/etc/xdg/hypr/`. Copy a file to `~/.config/hypr/` to edit it.
+Monitors are auto-detected; `hyprctl monitors` lists their names for custom
+rules.
 
 ## VM setup
 

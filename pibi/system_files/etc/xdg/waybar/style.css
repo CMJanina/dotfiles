@@ -1,0 +1,22 @@
+* {
+    font-family: "Noto Sans", sans-serif;
+    font-size: 14px;
+}
+
+window#waybar {
+    background: #000000;
+    color: #c7c7c7;
+}
+
+#workspaces button {
+    color: #c7c7c7;
+    border-radius: 0;
+}
+
+#workspaces button.active {
+    background: #333333;
+}
+
+#clock, #pulseaudio, #network, #tray, #custom-lock {
+    padding: 0 10px;
+}
