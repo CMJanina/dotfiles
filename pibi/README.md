@@ -64,7 +64,8 @@ Select **Plasma** to return to KDE.
 - Ctrl+Left/Right switches workspaces; Super+Alt+1 through 0 selects one. Add
   Shift to the number shortcut to move a window there.
 - Super+Ctrl+Q locks; Super+Shift+Q asks before logging out.
-- Super+Ctrl+Shift+3/4 copies the whole screen / a selected region.
+- Super+Shift+3/4 copies the whole screen / a selected region; Print does
+  region.
 
 Ctrl+Alt+arrows snaps to screen halves; Ctrl+Alt+Super+Left/Right moves windows
 between displays, like Magnet. Snapped windows float; Super+Ctrl+V returns them
