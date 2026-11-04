@@ -34,6 +34,7 @@ dnf5 install -y \
     usbmuxd \
     waybar \
     waypipe \
+    wev \
     wl-clipboard \
     wofi \
     xdg-desktop-portal-gtk \
