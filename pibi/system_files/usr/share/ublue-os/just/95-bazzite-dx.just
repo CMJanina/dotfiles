@@ -30,3 +30,14 @@ install-flatpaks:
     flatpak remote-modify --system --enable flathub
     xargs --no-run-if-empty --arg-file=/etc/ublue-os/system_flatpaks \
         flatpak install --system --assumeyes --noninteractive --or-update flathub
+    ujust install-sayso
+
+# Install Sayso's upstream Flatpak bundle.
+install-sayso:
+    #!/usr/bin/bash
+    set -euo pipefail
+    bundle=$(mktemp --suffix=.flatpak)
+    trap 'rm -- "$bundle"' EXIT
+    curl -fL -o "$bundle" https://github.com/watzon/sayso/releases/download/v0.14.1/sayso-0.14.1-linux-x86_64.flatpak
+    printf '%s  %s\n' c185b5bebc9e2d6f5235dcd362a6bed50f11fd3e7da699cfa20714df27c77d59 "$bundle" | sha256sum --check
+    flatpak install --system -y --noninteractive --or-update "$bundle"

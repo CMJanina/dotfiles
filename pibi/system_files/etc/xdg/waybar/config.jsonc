@@ -1,0 +1,26 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["pulseaudio", "network", "tray", "custom/lock"],
+    "hyprland/workspaces": { "on-click": "activate" },
+    "clock": {
+        "format": "{:%a %d %b  %H:%M}",
+        "tooltip-format": "{:%Y-%m-%d}"
+    },
+    "pulseaudio": {
+        "format": "Vol {volume}%",
+        "format-muted": "Muted",
+        "on-click": "uwsm app -- pavucontrol"
+    },
+    "network": {
+        "format-ethernet": "{ifname}",
+        "format-wifi": "{essid}",
+        "format-disconnected": "Offline",
+        "on-click": "uwsm app -- nm-connection-editor"
+    },
+    "tray": { "spacing": 8 },
+    "custom/lock": { "format": "Lock", "on-click": "loginctl lock-session" }
+}

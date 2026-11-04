@@ -9,24 +9,50 @@ bash /ctx/trust.sh /ctx/cosign.pub
 dnf5 install -y \
     android-tools \
     bcc \
+    brightnessctl \
     bpftop \
     bpftrace \
     ccache \
     flatpak-builder \
     git-subtree \
     google-noto-sans-fonts \
+    grim \
+    mako \
+    network-manager-applet \
     nicstat \
     numactl \
+    pavucontrol \
+    playerctl \
     podman-machine \
     podman-tui \
     python3-ramalama \
     restic \
     rclone \
+    slurp \
     sysprof \
     tiptop \
     usbmuxd \
+    waybar \
     waypipe \
+    wev \
+    wl-clipboard \
+    wofi \
+    xdg-desktop-portal-gtk \
     zsh
+
+# Waybar's tray uses StatusNotifier rather than X11 tray icons.
+sed -i 's/^Exec=nm-applet$/Exec=nm-applet --indicator/' /etc/xdg/autostart/nm-applet.desktop
+
+# Fedora retired Hyprland; keep its compositor and helpers from the same COPR.
+dnf5 -y copr enable nett00n/hyprland
+dnf5 --setopt=install_weak_deps=False install -y \
+    hyprland \
+    hypridle \
+    hyprlock \
+    hyprpolkitagent \
+    uwsm \
+    xdg-desktop-portal-hyprland
+dnf5 -y copr disable nett00n/hyprland
 
 dnf5 remove -y mesa-libOpenCL
 dnf5 --setopt=install_weak_deps=False install -y \
