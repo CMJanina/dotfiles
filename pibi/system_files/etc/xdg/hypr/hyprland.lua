@@ -1,7 +1,7 @@
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 
 hl.config({
-    input = { kb_layout = "us", follow_mouse = 1 },
+    input = { kb_layout = "us", follow_mouse = 1, accel_profile = "flat" },
     general = {
         layout = "dwindle",
         gaps_in = 4,
@@ -11,6 +11,7 @@ hl.config({
     },
     dwindle = { preserve_split = true },
     decoration = { rounding = 4 },
+    render = { cm_auto_hdr = 0 },
     misc = { disable_hyprland_logo = true, force_default_wallpaper = 0 },
 })
 
