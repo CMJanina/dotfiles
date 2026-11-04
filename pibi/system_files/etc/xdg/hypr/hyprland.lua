@@ -34,10 +34,48 @@ hl.bind("SUPER + ALT + SHIFT + Q", hl.dsp.exec_cmd("uwsm stop"))
 hl.bind("CTRL + left", hl.dsp.focus({ workspace = "m-1" }))
 hl.bind("CTRL + right", hl.dsp.focus({ workspace = "m+1" }))
 
+local function snapHalf(direction)
+    local window = hl.get_active_window()
+    local monitor = window and window.monitor
+    if not monitor then return end
+
+    local reserved = monitor.reserved
+    -- Mode dimensions already account for scaling and rotation.
+    local width = monitor.mode.width - reserved.left - reserved.right
+    local height = monitor.mode.height - reserved.top - reserved.bottom
+    local x = monitor.x + reserved.left
+    local y = monitor.y + reserved.top
+    if direction == "left" or direction == "right" then
+        local half = math.floor(width / 2)
+        if direction == "right" then
+            x = x + half
+            width = width - half
+        else
+            width = half
+        end
+    else
+        local half = math.floor(height / 2)
+        if direction == "down" then
+            y = y + half
+            height = height - half
+        else
+            height = half
+        end
+    end
+
+    local border = hl.get_config("general:border_size")
+    hl.dispatch(hl.dsp.window.fullscreen_state({ window = window, internal = 0, client = 0, layout_aware = false }))
+    hl.dispatch(hl.dsp.window.float({ window = window, action = "enable" }))
+    hl.dispatch(hl.dsp.window.resize({ window = window, x = width - 2 * border, y = height - 2 * border }))
+    hl.dispatch(hl.dsp.window.move({ window = window, x = x + border, y = y + border }))
+end
+
 for _, direction in ipairs({ "left", "right", "up", "down" }) do
     hl.bind("SUPER + CTRL + " .. direction, hl.dsp.focus({ direction = direction }))
-    hl.bind("SUPER + CTRL + SHIFT + " .. direction, hl.dsp.window.move({ direction = direction }))
+    hl.bind("CTRL + ALT + " .. direction, function() snapHalf(direction) end)
 end
+hl.bind("CTRL + ALT + SUPER + left", hl.dsp.window.move({ monitor = "-1" }))
+hl.bind("CTRL + ALT + SUPER + right", hl.dsp.window.move({ monitor = "+1" }))
 
 for workspace = 1, 10 do
     local key = workspace % 10

@@ -66,8 +66,10 @@ Select **Plasma** to return to KDE.
 - Super+Ctrl+Q locks; Super+Alt+Shift+Q logs out without confirmation.
 - Super+Ctrl+Shift+3/4 copies the whole screen / a selected region.
 
-Super+Ctrl+arrows changes window focus; add Shift to move a window. Idle locking
-starts after 10 minutes.
+Ctrl+Alt+arrows snaps to screen halves; Ctrl+Alt+Super+Left/Right moves windows
+between displays, like Magnet. Snapped windows float; Super+Ctrl+V returns them
+to automatic tiling. Super+Ctrl+arrows changes focus. Idle locking starts after
+10 minutes.
 
 Defaults are in `/etc/xdg/hypr/`. Copy a file to `~/.config/hypr/` to edit it.
 Monitors are auto-detected; `hyprctl monitors` lists their names for custom
