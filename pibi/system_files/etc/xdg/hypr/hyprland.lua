@@ -23,29 +23,34 @@ end)
 
 hl.bind("SUPER + Return", hl.dsp.exec_cmd("uwsm app -- ghostty"))
 hl.bind("SUPER + space", hl.dsp.exec_cmd("uwsm app -- wofi --show drun"))
-hl.bind("SUPER + E", hl.dsp.exec_cmd("uwsm app -- dolphin"))
-hl.bind("SUPER + B", hl.dsp.exec_cmd("uwsm app -- helium"))
-hl.bind("SUPER + Q", hl.dsp.window.close())
-hl.bind("SUPER + F", hl.dsp.window.fullscreen())
-hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind("SUPER + J", hl.dsp.layout("togglesplit"))
-hl.bind("SUPER + L", hl.dsp.exec_cmd("loginctl lock-session"))
-hl.bind("SUPER + SHIFT + E", hl.dsp.exec_cmd("uwsm stop"))
+hl.bind("SUPER + CTRL + E", hl.dsp.exec_cmd("uwsm app -- dolphin"))
+hl.bind("SUPER + CTRL + B", hl.dsp.exec_cmd("uwsm app -- helium"))
+hl.bind("SUPER + W", hl.dsp.window.close())
+hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen())
+hl.bind("SUPER + CTRL + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("SUPER + CTRL + J", hl.dsp.layout("togglesplit"))
+hl.bind("SUPER + CTRL + Q", hl.dsp.exec_cmd("loginctl lock-session"))
+hl.bind("SUPER + ALT + SHIFT + Q", hl.dsp.exec_cmd("uwsm stop"))
+hl.bind("CTRL + left", hl.dsp.focus({ workspace = "m-1" }))
+hl.bind("CTRL + right", hl.dsp.focus({ workspace = "m+1" }))
 
 for _, direction in ipairs({ "left", "right", "up", "down" }) do
-    hl.bind("SUPER + " .. direction, hl.dsp.focus({ direction = direction }))
-    hl.bind("SUPER + SHIFT + " .. direction, hl.dsp.window.move({ direction = direction }))
+    hl.bind("SUPER + CTRL + " .. direction, hl.dsp.focus({ direction = direction }))
+    hl.bind("SUPER + CTRL + SHIFT + " .. direction, hl.dsp.window.move({ direction = direction }))
 end
 
 for workspace = 1, 10 do
     local key = workspace % 10
-    hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = workspace }))
-    hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = workspace }))
+    hl.bind("SUPER + ALT + " .. key, hl.dsp.focus({ workspace = workspace }))
+    hl.bind("SUPER + ALT + SHIFT + " .. key, hl.dsp.window.move({ workspace = workspace }))
 end
 
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
-hl.bind("Print", hl.dsp.exec_cmd([[uwsm app -- sh -c 'geometry=$(slurp) && grim -g "$geometry" - | wl-copy']]))
+local copyRegion = hl.dsp.exec_cmd([[uwsm app -- sh -c 'geometry=$(slurp) && grim -g "$geometry" - | wl-copy']])
+hl.bind("Print", copyRegion)
+hl.bind("SUPER + CTRL + SHIFT + 4", copyRegion)
+hl.bind("SUPER + CTRL + SHIFT + 3", hl.dsp.exec_cmd([[uwsm app -- sh -c 'grim - | wl-copy']]))
 
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true, locked = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true, locked = true })

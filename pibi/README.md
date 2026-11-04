@@ -60,9 +60,14 @@ After updating and rebooting, select **Hyprland (uwsm-managed)** at login.
 Select **Plasma** to return to KDE.
 
 - Super+Enter opens Ghostty; Super+Space opens the app launcher.
-- Super+Q closes a window; Super+arrows changes focus.
-- Super+1 through 0 switches workspaces; add Shift to move a window there.
-- Super+L locks; Super+Shift+E logs out. Idle locking starts after 10 minutes.
+- Super+W closes a window; Super+Ctrl+F toggles fullscreen.
+- Ctrl+Left/Right switches workspaces; Super+Alt+1 through 0 selects one. Add
+  Shift to the number shortcut to move a window there.
+- Super+Ctrl+Q locks; Super+Alt+Shift+Q logs out without confirmation.
+- Super+Ctrl+Shift+3/4 copies the whole screen / a selected region.
+
+Super+Ctrl+arrows changes window focus; add Shift to move a window. Idle locking
+starts after 10 minutes.
 
 Defaults are in `/etc/xdg/hypr/`. Copy a file to `~/.config/hypr/` to edit it.
 Monitors are auto-detected; `hyprctl monitors` lists their names for custom
