@@ -47,6 +47,7 @@ sed -i 's/^Exec=nm-applet$/Exec=nm-applet --indicator/' /etc/xdg/autostart/nm-ap
 dnf5 -y copr enable nett00n/hyprland
 dnf5 --setopt=install_weak_deps=False install -y \
     hyprland \
+    hyprland-guiutils \
     hypridle \
     hyprlock \
     hyprpolkitagent \
