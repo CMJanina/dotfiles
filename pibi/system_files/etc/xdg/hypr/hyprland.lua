@@ -30,7 +30,7 @@ hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen())
 hl.bind("SUPER + CTRL + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + CTRL + J", hl.dsp.layout("togglesplit"))
 hl.bind("SUPER + CTRL + Q", hl.dsp.exec_cmd("loginctl lock-session"))
-hl.bind("SUPER + ALT + SHIFT + Q", hl.dsp.exec_cmd("uwsm stop"))
+hl.bind("SUPER + SHIFT + Q", hl.dsp.exec_cmd([[uwsm app -- sh -c 'choice=$(printf "Cancel\nLog out\n" | wofi --dmenu --prompt "Log out?" --lines 2 --cache-file /dev/null) && [ "$choice" = "Log out" ] && uwsm stop']]))
 hl.bind("CTRL + left", hl.dsp.focus({ workspace = "m-1" }))
 hl.bind("CTRL + right", hl.dsp.focus({ workspace = "m+1" }))
 
