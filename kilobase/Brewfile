@@ -29,6 +29,7 @@ brew "yt-dlp"
 
 cask "1password-cli"
 cask "losslesscut"
+cask "t3-code"
 
 cargo "cargo-update"
 cargo "openscad-lsp"
