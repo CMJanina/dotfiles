@@ -1,6 +1,58 @@
 #!/bin/sh
 set -uxe
 
+kwriteconfig6 --file kdeglobals --group KDE --key AnimationDurationFactor --notify 0
+xdg-settings set default-web-browser helium.desktop
+
+kwriteconfig6 --file kdeglobals --group Shortcuts --key Copy --notify 'Ctrl+C; Ctrl+Ins; Meta+C'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key Cut --notify 'Shift+Del; Meta+X; Ctrl+X'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key DeleteFile --notify none
+kwriteconfig6 --file kdeglobals --group Shortcuts --key DeleteWordBack --notify 'Alt+Backspace; Ctrl+Backspace'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key DeleteWordForward --notify 'Ctrl+Del; Alt+Del'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key Find --notify 'Ctrl+F; Meta+F'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key MoveToTrash --notify 'Del; Meta+Backspace'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key Paste --notify 'Shift+Ins; Ctrl+V; Meta+V'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key SelectAll --notify 'Meta+A; Ctrl+A'
+kwriteconfig6 --file kdeglobals --group Shortcuts --key Undo --notify 'Meta+Z; Ctrl+Z'
+
+kwriteconfig6 --file kglobalshortcutsrc --group kwin --key 'Window Restore' --notify 'none,Meta+Backspace,Restore Window'
+kwriteconfig6 --file kglobalshortcutsrc --group services --group org.kde.krunner.desktop --key _launch --notify "$(printf 'Search\tAlt+F2\tMeta+Space')"
+kwriteconfig6 --file kglobalshortcutsrc --group dev.sayso.Sayso --key toggle --notify 'Alt+Space,Ctrl+Alt+Space,Start or stop a dictation'
+kwriteconfig6 --file kglobalshortcutsrc --group dev.sayso.Sayso --key cycle-style --notify 'none,Ctrl+Alt+S,Switch to the next style'
+kwriteconfig6 --file kglobalshortcutsrc --group dev.sayso.Sayso --key paste-last --notify 'none,Ctrl+Alt+V,Paste the last dictation'
+kwriteconfig6 --file kglobalshortcutsrc --group plasmashell --key show-on-mouse-pos --notify 'none,Meta+V,Show Clipboard Items at Mouse Position'
+
+kwriteconfig6 --file kcminputrc --group Keyboard --key KeyRepeat --notify repeat
+kwriteconfig6 --file kcminputrc --group Keyboard --key RepeatDelay --notify 250
+kwriteconfig6 --file kcminputrc --group Keyboard --key RepeatRate --notify 30
+
+kwriteconfig6 --file dolphinrc --group General --key ShowFullPath --type bool --notify true
+kwriteconfig6 --file dolphinrc --group General --key ShowFullPathInTitlebar --type bool --notify true
+kwriteconfig6 --file dolphinrc --group General --key ShowStatusBar --notify FullWidth
+
+kwriteconfig6 --file kdeglobals --group 'KFileDialog Settings' --key 'Show hidden files' --type bool --notify true
+kwriteconfig6 --file kdeglobals --group 'KFileDialog Settings' --key 'Sort directories first' --type bool --notify true
+kwriteconfig6 --file kdeglobals --group 'KFileDialog Settings' --key 'View Style' --notify DetailTree
+
+dolphin_view_defaults="${XDG_DATA_HOME:-$HOME/.local/share}/dolphin/view_properties/global/.directory"
+mkdir -p "${dolphin_view_defaults%/*}"
+kwriteconfig6 --file "$dolphin_view_defaults" --group Settings --key HiddenFilesShown --type bool true
+kwriteconfig6 --file "$dolphin_view_defaults" --group Dolphin --key SortFoldersFirst --type bool true
+
+for category in LANG LC_ADDRESS LC_MEASUREMENT LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE; do
+        kwriteconfig6 --file plasma-localerc --group Formats --key "$category" --notify C.UTF-8
+done
+kwriteconfig6 --file plasma-localerc --group Formats --key LC_TIME --notify de_DE.UTF-8
+kwriteconfig6 --file plasma-localerc --group Translations --key LANGUAGE --notify C:en_US:de
+
+kwriteconfig6 --file powerdevilrc --group AC --group SuspendAndShutdown --key AutoSuspendAction --notify 0
+kwriteconfig6 --file kscreenlockerrc --group Daemon --key Autolock --type bool --notify true
+kwriteconfig6 --file kscreenlockerrc --group Daemon --key Timeout --notify 15
+
+plasma-apply-cursortheme macOS
+kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key library --notify org.kde.kwin.aurorae.v2
+kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme --notify __aurorae__svg__Obsidian.Dark
+
 brew bundle -v
 
 cd .. && ./run kilobase

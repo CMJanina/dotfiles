@@ -15,8 +15,8 @@ installing all the actual packages.
 
 ## **Pi**xie's **K**DE **D**esktop (`pikd`)
 
-Installs a few desktop apps, developed and tested on Bazzite (DX) and Fedora
-Asahi:
+Installs desktop apps and configures KDE Plasma on Fedora-based systems, mainly
+[pibi](pibi/README.md):
 
 ```sh
 curl -L https://github.com/pixelcmtd/dotfiles/raw/daddy/install | sh -s pikd
