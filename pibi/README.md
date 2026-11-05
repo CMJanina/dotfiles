@@ -1,8 +1,8 @@
 # Pibi
 
 Based on `ghcr.io/ublue-os/bazzite:testing`, with DX development/ROCm tools,
-Linux VMs and GPU passthrough, Ghostty, Helium and Podman. KDE desktop, with an
-optional Hyprland session and without Gaming Mode defaults.
+Linux VMs and GPU passthrough, Ghostty, Helium and Podman. KDE desktop, without
+Gaming Mode defaults.
 
 AMDGPU uses `runpm=0` to keep the GPU awake when the KVM switches away. This can
 increase idle power use.
@@ -53,28 +53,6 @@ ujust install-flatpaks
 `ujust install-flatpaks` includes Sayso. Run `ujust install-sayso` to install it
 separately. Launch Sayso, download a speech model, and use Ctrl+Alt+Space.
 Version 0.14.1 is pinned; `flatpak update` cannot update its upstream bundle.
-
-## Hyprland
-
-After updating and rebooting, select **Hyprland (uwsm-managed)** at login.
-Select **Plasma** to return to KDE.
-
-- Super+Enter opens Ghostty; Super+Space opens the app launcher.
-- Super+W closes a window; Super+Ctrl+F toggles fullscreen.
-- Ctrl+Left/Right switches workspaces; Super+Alt+1 through 0 selects one. Add
-  Shift to the number shortcut to move a window there.
-- Super+Ctrl+Q locks; Super+Shift+Q asks before logging out.
-- Super+Shift+3/4 copies the whole screen / a selected region; Print does
-  region.
-
-Ctrl+Alt+arrows snaps to screen halves; Ctrl+Alt+Super+Left/Right moves windows
-between displays, like Magnet. Snapped windows float; Super+Ctrl+V returns them
-to automatic tiling. Super+Ctrl+arrows changes focus. Idle locking starts after
-10 minutes.
-
-Defaults are in `/etc/xdg/hypr/`. Copy a file to `~/.config/hypr/` to edit it.
-Monitors are auto-detected; `hyprctl monitors` lists their names for custom
-rules.
 
 ## VM setup
 

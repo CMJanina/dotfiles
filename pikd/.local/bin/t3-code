@@ -1,3 +1,0 @@
-#!/bin/sh
-export T3CODE_DESKTOP_LAUNCHER_PATH="$HOME/.local/bin/t3-code"
-exec "$HOME/Applications/T3 Code.AppImage" --password-store=kwallet6 "$@"

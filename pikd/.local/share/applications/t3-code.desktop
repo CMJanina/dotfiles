@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=T3 Code
-Exec=t3-code %U
-Icon=com.t3tools.T3Code
-Terminal=false
-Categories=Development;

@@ -9,51 +9,24 @@ bash /ctx/trust.sh /ctx/cosign.pub
 dnf5 install -y \
     android-tools \
     bcc \
-    brightnessctl \
     bpftop \
     bpftrace \
     ccache \
     flatpak-builder \
     git-subtree \
     google-noto-sans-fonts \
-    grim \
-    mako \
-    network-manager-applet \
     nicstat \
     numactl \
-    pavucontrol \
-    playerctl \
     podman-machine \
     podman-tui \
     python3-ramalama \
     restic \
     rclone \
-    slurp \
     sysprof \
     tiptop \
     usbmuxd \
-    waybar \
     waypipe \
-    wev \
-    wl-clipboard \
-    wofi \
-    xdg-desktop-portal-gtk \
     zsh
-
-# Waybar's tray uses StatusNotifier rather than X11 tray icons.
-sed -i 's/^Exec=nm-applet$/Exec=nm-applet --indicator/' /etc/xdg/autostart/nm-applet.desktop
-
-# Fedora retired Hyprland; keep its compositor and helpers from the same COPR.
-dnf5 -y copr enable nett00n/hyprland
-dnf5 --setopt=install_weak_deps=False install -y \
-    hyprland \
-    hyprland-guiutils \
-    hypridle \
-    hyprlock \
-    hyprpolkitagent \
-    uwsm \
-    xdg-desktop-portal-hyprland
-dnf5 -y copr disable nett00n/hyprland
 
 dnf5 remove -y mesa-libOpenCL
 dnf5 --setopt=install_weak_deps=False install -y \
@@ -80,6 +53,30 @@ done
 dnf5 --setopt=localpkg_gpgcheck=True install -y "${qt5_packages[@]}" ghostty helium-bin
 dnf5 -y copr disable scottames/ghostty
 dnf5 -y copr disable imput/helium
+
+mkdir -p /usr/share/icons /usr/share/licenses/apple-cursor /usr/share/doc/apple-cursor
+curl -fL -o /tmp/apple-cursors.tar.xz https://github.com/ful1e5/apple_cursor/releases/download/v2.0.1/macOS.tar.xz
+curl -fL -o /usr/share/doc/apple-cursor/source.tar.gz https://codeload.github.com/ful1e5/apple_cursor/tar.gz/69b14f383dd6ee7c6f744782e8c8652274bddcb6
+printf '%s  %s\n' \
+    9c6e5e13b068ce51a9e90a9abd6ce232ec7d25d4ceb05aa8ac76efbb99c76762 /tmp/apple-cursors.tar.xz \
+    b8ce1e239361d5577c7cb7675458bcf9483d36c28964ca7fac5803f4339c0893 /usr/share/doc/apple-cursor/source.tar.gz | sha256sum --check
+tar -xJf /tmp/apple-cursors.tar.xz -C /usr/share/icons ./macOS
+tar -xJOf /tmp/apple-cursors.tar.xz ./LICENSE > /usr/share/licenses/apple-cursor/LICENSE
+
+# KDE Store download URLs expire, so resolve the URL at build time.
+obsidian_url=$(curl -fL https://api.kde-look.org/ocs/v1/content/data/2283872/archived |
+    python3 -c '
+import sys, xml.etree.ElementTree as ET
+content = ET.parse(sys.stdin).find("./data/content")
+version = next(entry for entry in content
+               if entry.tag.startswith("download_version") and entry.text == "1.2.2")
+print(content.findtext("downloadlink" + version.tag.removeprefix("download_version")))
+')
+curl -fL -o /tmp/obsidian-dark.tar.xz "$obsidian_url"
+printf '%s  %s\n' 76474e658d0bdc494f4bb3f2d6d1e475598536bde841ecea06b902fb6504a695 /tmp/obsidian-dark.tar.xz | sha256sum --check
+mkdir -p /usr/share/aurorae/themes /usr/share/licenses/obsidian-dark
+tar -xJf /tmp/obsidian-dark.tar.xz -C /usr/share/aurorae/themes Obsidian.Dark
+cp /usr/share/aurorae/themes/Obsidian.Dark/LICENSE.md /usr/share/licenses/obsidian-dark/
 
 # Packages under /var/opt must live in /usr to survive image deployment.
 mkdir -p /usr/lib/opt
