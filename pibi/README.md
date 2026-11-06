@@ -54,6 +54,13 @@ ujust install-flatpaks
 separately. Launch Sayso, download a speech model, and use Ctrl+Alt+Space.
 Version 0.14.1 is pinned; `flatpak update` cannot update its upstream bundle.
 
+## Java Web Start
+
+Run `javaws path/to/file.jnlp`. Fedora provides IcedTea-Web; Adoptium's RPM
+repository provides Temurin 8 and the Java 21 dependency. The launcher selects
+Java 8 without changing the default Java. Image builds install current package
+versions.
+
 ## VM setup
 
 If the machine still needs virtualization and GPU passthrough configured:
