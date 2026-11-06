@@ -46,15 +46,20 @@ acl() {
     [[ $(ls -lde "$1") == *"user:janina $2"* ]] || chmod +a# 0 "user:janina $2" "$1"
 }
 sdk="$personal/Library/Android/sdk"
-for directory in /Users/* /Volumes/src; do
+for directory in /Users/*; do
     [[ -d $directory && $directory != "$home" && $directory != /Users/Shared ]] || continue
-    [[ ! -L $directory ]] || die "Refusing a symlinked home or volume: $directory"
+    [[ ! -L $directory ]] || die "Refusing a symlinked home: $directory"
     if [[ $directory == "$personal" && -d $sdk ]]; then
         acl "$directory" 'deny list,add_file,add_subdirectory,delete_child'
     else
         acl "$directory" 'deny list,add_file,search'
     fi
 done
+if [[ -d /Volumes/src && ! -L /Volumes/src ]]; then
+    while [[ $(ls -lde /Volumes/src) == *'user:janina deny list,add_file,search'* ]]; do
+        chmod -a 'user:janina deny list,add_file,search' /Volumes/src
+    done
+fi
 if [[ -d $sdk ]]; then
     [[ ! -L $sdk ]] || die 'Use a real SDK directory.'
     for directory in "$personal" "$personal/Library" "$personal/Library/Android"; do

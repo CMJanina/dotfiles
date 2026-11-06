@@ -5,7 +5,7 @@ T3 on port 3773 at boot. Janina uses Homebrew Bash.
 
 The personal Android SDK is shared read-only. Its parent directories allow
 search, so known paths remain accessible subject to normal permissions. Other
-homes and `/Volumes/src`, if present, are blocked.
+homes are blocked. `/Volumes/src` stays accessible for projects and worktrees.
 
 Device support is enabled. Pair a client, sign into providers, and provision
 compatible iOS runtimes and Android AVDs. Android browser video needs HTTPS or
