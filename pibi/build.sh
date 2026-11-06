@@ -41,6 +41,13 @@ dnf5 --setopt=install_weak_deps=False install -y \
     edk2-ovmf \
     guestfs-tools
 
+dnf5 install -y adoptium-temurin-java-repository
+dnf5 --enablerepo=adoptium-temurin-java-repository install -y icedtea-web temurin-8-jre
+alternatives --install /usr/bin/javaws javaws.x86_64 /usr/libexec/javaws-temurin8 1 \
+    --slave /usr/bin/itweb-settings itweb-settings /usr/bin/itweb-settings.itweb \
+    --slave /usr/bin/policyeditor policyeditor /usr/bin/policyeditor.itweb
+alternatives --set javaws.x86_64 /usr/libexec/javaws-temurin8
+
 dnf5 -y copr enable scottames/ghostty
 dnf5 -y copr enable imput/helium
 

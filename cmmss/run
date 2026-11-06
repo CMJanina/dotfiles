@@ -110,6 +110,15 @@ brew bundle install -v
 (
     set -o pipefail
     cd "$(mktemp -d)"
+    curl -fL -o icedtea-web.zip https://github.com/AdoptOpenJDK/IcedTea-Web/releases/download/icedtea-web-1.8.8/icedtea-web-1.8.8.macos.bin.zip
+    echo '5fecb930a25f3c7d4f58fed9f34858ec134ee9f98099e2095e9a9010d1875b75  icedtea-web.zip' | shasum -a 256 --check -
+    mkdir -p "$HOME/.local/share/icedtea-web"
+    unzip -oq icedtea-web.zip -d "$HOME/.local/share/icedtea-web"
+)
+
+(
+    set -o pipefail
+    cd "$(mktemp -d)"
 
     poco_asset="poco-macos-$(uname -m).tar.gz"
     curl -fLO https://github.com/pixelcmtd/poco/releases/latest/download/$poco_asset
