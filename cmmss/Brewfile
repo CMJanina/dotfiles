@@ -1,3 +1,4 @@
+brew "bash"
 brew "dockutil"
 brew "ios-deploy"
 brew "molten-vk"

@@ -1,0 +1,93 @@
+#!/bin/bash
+set -euo pipefail
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+die() { echo "$*" >&2; exit 1; }
+[[ $(uname -s) == Darwin && $(uname -m) == arm64 && $(id -u) == 0 ]] || die 'Run with sudo on an Apple Silicon Mac.'
+personal=${1:?Pass the personal account home}
+home=/Users/janina
+dest='/Library/Application Support/chrissx/Janina'
+source_dir=$(cd -- "$(dirname -- "$0")" && pwd)
+label=de.chrissx.janina.t3
+[[ $personal == /Users/* && $personal != "$home" && $personal != /Users/Shared ]] || die 'Expected the personal account home.'
+
+if id janina >/dev/null 2>&1; then
+    dscl . -read /Users/janina Comment | grep -Fq 'Managed by cmmss' || die 'Refusing an unrelated janina account.'
+else
+    ! dscl . -read /Groups/janina >/dev/null 2>&1 || die 'Inspect the existing janina group first.'
+    uid=$({ dscl . -list /Users UniqueID && dscl . -list /Groups PrimaryGroupID; } |
+        awk '{used[$NF]=1} END {for(i=501;i<60000;i++) if(!used[i]) {print i;exit}}')
+    [[ -n $uid ]] || die 'No free account ID.'
+    dscl . -create /Groups/janina PrimaryGroupID "$uid"
+    dscl . -create /Groups/janina GeneratedUID "$(uuidgen)"
+    dscl . -create /Users/janina UniqueID "$uid"
+    dscl . -create /Users/janina PrimaryGroupID "$uid"
+    dscl . -create /Users/janina GeneratedUID "$(uuidgen)"
+    dscl . -create /Users/janina NFSHomeDirectory "$home"
+    dscl . -create /Users/janina RealName Janina
+    dscl . -create /Users/janina Comment 'Managed by cmmss'
+fi
+[[ $(id -gn janina) == janina && $(dscl . -read /Users/janina NFSHomeDirectory) == "NFSHomeDirectory: $home" ]] || die 'Unexpected janina group or home.'
+uid=$(id -u janina)
+[[ $uid -ge 501 && $(dscl . -list /Users UniqueID | awk -v uid="$uid" '$NF==uid {n++} END {print n}') == 1 ]] || die 'Janina must have a unique user ID.'
+case " $(id -Gn janina) " in *' admin '*|*' staff '*) die 'Janina must not belong to admin or staff.' ;; esac
+dscl . -create /Users/janina Password '*'
+dscl . -create /Users/janina AuthenticationAuthority ';DisabledUser;'
+dscl . -create /Users/janina IsHidden 1
+dscl . -create /Users/janina UserShell /opt/homebrew/bin/bash
+[[ ! -L $home ]] || die 'Refusing a symlinked home.'
+install -d -o janina -g janina -m 700 "$home"
+chmod -N "$home"
+
+as_user() {
+    sudo -H -u janina env -i HOME="$home" USER=janina LOGNAME=janina SHELL=/opt/homebrew/bin/bash \
+        PATH="$home/.local/bin:/opt/homebrew/bin:$PATH" "$@" </dev/null
+}
+acl() {
+    [[ $(ls -lde "$1") == *"user:janina $2"* ]] || chmod +a# 0 "user:janina $2" "$1"
+}
+sdk="$personal/Library/Android/sdk"
+for directory in /Users/* /Volumes/src; do
+    [[ -d $directory && $directory != "$home" && $directory != /Users/Shared ]] || continue
+    [[ ! -L $directory ]] || die "Refusing a symlinked home or volume: $directory"
+    if [[ $directory == "$personal" && -d $sdk ]]; then
+        acl "$directory" 'deny list,add_file,add_subdirectory,delete_child'
+    else
+        acl "$directory" 'deny list,add_file,search'
+    fi
+done
+if [[ -d $sdk ]]; then
+    [[ ! -L $sdk ]] || die 'Use a real SDK directory.'
+    for directory in "$personal" "$personal/Library" "$personal/Library/Android"; do
+        acl "$directory" 'allow search'
+    done
+    readonly_acl='user:janina deny add_file,delete,add_subdirectory,delete_child,writeattr,writeextattr,writesecurity,chown,file_inherit,directory_inherit'
+    [[ $(ls -lde "$sdk") == *"0: $readonly_acl"* ]] || chmod -R +a# 0 "$readonly_acl" "$sdk"
+    as_user mkdir -p "$home/Library/Android"
+    [[ -e $home/Library/Android/sdk || -L $home/Library/Android/sdk ]] || as_user ln -s "$sdk" "$home/Library/Android/sdk"
+else
+    echo 'No personal Android SDK found. Provision one explicitly for Janina.' >&2
+fi
+
+as_user /opt/homebrew/bin/npm install --global --prefix "$home/.local" t3@latest
+# HOME must expand in Janina's shell after sudo.
+# shellcheck disable=SC2016
+as_user /bin/sh -eu -c '
+    umask 077
+    file="$HOME/.t3/userdata/settings.json"
+    mkdir -p "$(dirname "$file")"
+    [ -f "$file" ] || printf "{}\n" > "$file"
+    temporary=$(mktemp "$file.XXXXXX")
+    jq -e ". + {enableDeviceSupport:true, enableAgentDeviceAccess:true, deviceOnboardingCompleted:true}" "$file" > "$temporary" || { rm -f "$temporary"; exit 1; }
+    mv "$temporary" "$file"
+'
+[[ ! -L $dest ]] || die 'Refusing a symlinked service directory.'
+[[ ! -e $dest || $(stat -f %u "$dest") == 0 ]] || die 'The service directory must be root-owned.'
+[[ ! -d $dest ]] || ! as_user test -w "$dest" || die 'Janina can modify the service directory.'
+install -d -o root -g wheel -m 755 "$dest"
+install -o root -g wheel -m 755 "$source_dir/start" "$dest/start"
+plutil -lint "$source_dir/$label.plist"
+install -o root -g wheel -m 644 "$source_dir/$label.plist" "/Library/LaunchDaemons/$label.plist"
+if ! launchctl print "system/$label" >/dev/null 2>&1; then
+    ! lsof -nP -iTCP:3773 -sTCP:LISTEN >/dev/null || die 'Stop the other T3 server on port 3773 first.'
+    launchctl bootstrap system "/Library/LaunchDaemons/$label.plist"
+fi

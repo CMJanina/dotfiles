@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key><string>de.chrissx.janina.t3</string>
+    <key>UserName</key><string>janina</string>
+    <key>GroupName</key><string>janina</string>
+    <key>ProgramArguments</key>
+    <array><string>/Library/Application Support/chrissx/Janina/start</string></array>
+    <key>WorkingDirectory</key><string>/Users/janina</string>
+    <key>StandardOutPath</key><string>/var/log/janina-t3.log</string>
+    <key>StandardErrorPath</key><string>/var/log/janina-t3.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key><string>/Users/janina</string>
+        <key>USER</key><string>janina</string>
+        <key>LOGNAME</key><string>janina</string>
+        <key>SHELL</key><string>/opt/homebrew/bin/bash</string>
+        <key>PATH</key><string>/Users/janina/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>RunAtLoad</key><true/>
+    <key>KeepAlive</key><true/>
+    <key>ThrottleInterval</key><integer>10</integer>
+    <key>ExitTimeOut</key><integer>90</integer>
+    <key>ProcessType</key><string>Interactive</string>
+    <key>Umask</key><integer>63</integer>
+</dict>
+</plist>

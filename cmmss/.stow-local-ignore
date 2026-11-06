@@ -3,6 +3,7 @@ Compose.yaml
 Brewfile
 Brewfile.lock.json
 run
+janina
 theos
 com.googlecode.iterm2.plist
 .gitignore

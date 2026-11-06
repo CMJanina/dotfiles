@@ -126,7 +126,7 @@ poco -t Cocoa Compose.yaml > ~/Library/KeyBindings/DefaultKeyBinding.dict
 grep pinentry ~/.gnupg/gpg-agent.conf || \
         echo pinentry-program /usr/local/MacGPG2/libexec/pinentry-mac.app/Contents/MacOS/pinentry-mac >> ~/.gnupg/gpg-agent.conf
 
-cd .. && ./run kilobase
+cd .. && ./run kilobase && cd cmmss
 
 dockutil --remove all --no-restart
 set +x
@@ -172,3 +172,5 @@ do
 done
 set -x
 killall Dock
+
+sudo ./janina/setup "$HOME"

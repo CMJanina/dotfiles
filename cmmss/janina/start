@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+[ "$(/usr/bin/id -un)" = janina ] && [ "$HOME" = /Users/janina ] || exit 1
+umask 077
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export "JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null || true)"
+cd "$HOME"
+exec "$HOME/.local/bin/t3" serve --host 0.0.0.0 --port 3773
