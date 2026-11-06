@@ -5,24 +5,35 @@ installing all the actual packages.
 
 <!-- toc GFM -->
 
-- [**Pi**xie's **K**DE **D**esktop (`pikd`)](#pixies-kde-desktop-pikd)
-- [**c**hrissx **M**edia **m**acOS **S**etup **S**cripts (`cmmss`)](#chrissx-media-macos-setup-scripts-cmmss)
-  - [Other software (esp. audio plugins)](#other-software-esp-audio-plugins)
-- [`base`](#base)
-- [Updating](#updating)
+- [Images](#images)
+  - [**Pi**xie's **B**azzite **I**mage (`pibi`)](#pixies-bazzite-image-pibi)
+- [Configs](#configs)
+  - [**Pi**xie's **K**DE **D**esktop (`pikd`)](#pixies-kde-desktop-pikd)
+  - [**c**hrissx **M**edia **m**acOS **S**etup **S**cripts (`cmmss`)](#chrissx-media-macos-setup-scripts-cmmss)
+    - [Other software (esp. audio plugins)](#other-software-esp-audio-plugins)
+  - [`base`](#base)
+  - [`kilobase`](#kilobase)
+  - [Updating](#updating)
 
 <!-- toc -->
 
-## **Pi**xie's **K**DE **D**esktop (`pikd`)
+## Images
 
-Installs desktop apps and configures KDE Plasma on Fedora-based systems, mainly
-[pibi](pibi/README.md):
+### **Pi**xie's **B**azzite **I**mage (`pibi`)
+
+[A Fedora Atomic image similar to Bazzite DX](pibi/README.md).
+
+## Configs
+
+### **Pi**xie's **K**DE **D**esktop (`pikd`)
+
+Installs desktop apps and configures KDE Plasma, mainly `pibi`:
 
 ```sh
 curl -L https://github.com/pixelcmtd/dotfiles/raw/daddy/install | sh -s pikd
 ```
 
-## **c**hrissx **M**edia **m**acOS **S**etup **S**cripts (`cmmss`)
+### **c**hrissx **M**edia **m**acOS **S**etup **S**cripts (`cmmss`)
 
 A set of scripts for easily installing a lot of packages and configuration,
 primarily on "Apple silicon" (ARM), currently macOS 15 Sequoia and macOS 27
@@ -46,7 +57,7 @@ Golden Gate.
   `Load preferences from a custom folder or URL` →
   `/Users/your_name/src/pixelcmtd/dotfiles/cmmss`
 
-### Other software (esp. audio plugins)
+#### Other software (esp. audio plugins)
 
 A lot of software, especially audio plugins, isn't in Homebrew, or otherwise
 easily automatable. This may be seen as a long to-do list.
@@ -62,7 +73,7 @@ easily automatable. This may be seen as a long to-do list.
 - [GVST](https://www.gvst.co.uk/downloads.htm)
 - [Melodyne](https://services.celemony.com/cgi-bin/WebObjects/LicenseApp.woa/wa/LoginDA)
 
-## `base`
+### `base`
 
 > [!NOTE]
 > `base` is not intended for individual install, but for installation through
@@ -82,7 +93,7 @@ The part of `base` that you wouldn't want for a minimal/devcontainer/… install
 - install [a few more packages](kilobase/Brewfile)
 - clone a big list of repos into `~/src`
 
-## Updating
+### Updating
 
 Using `topgrade` to update all installed packages is recommended. To keep
 configurations in sync, `git pull && ./run base` (maybe `./run cmmss`,
