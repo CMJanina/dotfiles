@@ -151,6 +151,9 @@ for app in \
     "/Applications/VSCodium.app" \
     "/Applications/T3 Code (Beta).app" \
     "/Applications/ChatGPT.app" \
+    "/Applications/Hermes.app" \
+    "/Applications/OpenClaw.app" \
+    "/Applications/Osaurus.app" \
     "/System/Applications/FaceTime.app" \
     "/Applications/Numbers.app" \
     "/Applications/Numbers Creator Studio.app" \
