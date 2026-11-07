@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -euxo pipefail
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 die() { echo "$*" >&2; exit 1; }
 [[ $(uname -s) == Darwin && $(uname -m) == arm64 && $(id -u) == 0 ]] || die 'Run with sudo on an Apple Silicon Mac.'
