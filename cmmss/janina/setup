@@ -38,10 +38,11 @@ dscl . -create /Users/janina UserShell /opt/homebrew/bin/bash
 install -d -o janina -g janina -m 700 "$home"
 chmod -N "$home"
 
-as_user() {
+as_user() (
+    cd "$home"
     sudo -H -u janina env -i HOME="$home" USER=janina LOGNAME=janina SHELL=/opt/homebrew/bin/bash \
         PATH="$home/.local/bin:/opt/homebrew/bin:$PATH" "$@" </dev/null
-}
+)
 acl() {
     [[ $(ls -lde "$1") == *"user:janina $2"* ]] || chmod +a# 0 "user:janina $2" "$1"
 }
