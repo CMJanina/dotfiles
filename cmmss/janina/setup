@@ -55,11 +55,6 @@ for directory in /Users/*; do
         acl "$directory" 'deny list,add_file,search'
     fi
 done
-if [[ -d /Volumes/src && ! -L /Volumes/src ]]; then
-    while [[ $(ls -lde /Volumes/src) == *'user:janina deny list,add_file,search'* ]]; do
-        chmod -a 'user:janina deny list,add_file,search' /Volumes/src
-    done
-fi
 if [[ -d $sdk ]]; then
     [[ ! -L $sdk ]] || die 'Use a real SDK directory.'
     for directory in "$personal" "$personal/Library" "$personal/Library/Android"; do
