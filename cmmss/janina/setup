@@ -21,7 +21,7 @@ else
     dscl . -create /Groups/janina GeneratedUID "$(uuidgen)"
     dscl . -create /Users/janina UniqueID "$uid"
     dscl . -create /Users/janina PrimaryGroupID "$uid"
-    dscl . -create /Users/janina GeneratedUID "$(uuidgen)"
+    dscl . -read /Users/janina GeneratedUID
     dscl . -create /Users/janina NFSHomeDirectory "$home"
     dscl . -create /Users/janina RealName Janina
     dscl . -create /Users/janina Comment 'Managed by cmmss'
