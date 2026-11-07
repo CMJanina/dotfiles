@@ -86,6 +86,7 @@ as_user /bin/sh -eu -c '
 [[ ! -d $dest ]] || ! as_user test -w "$dest" || die 'Janina can modify the service directory.'
 install -d -o root -g wheel -m 755 "$dest"
 install -o root -g wheel -m 755 "$source_dir/start" "$dest/start"
+[[ -e /var/log/janina-t3.log ]] || install -o janina -g janina -m 600 /dev/null /var/log/janina-t3.log
 plutil -lint "$source_dir/$label.plist"
 install -o root -g wheel -m 644 "$source_dir/$label.plist" "/Library/LaunchDaemons/$label.plist"
 if ! launchctl print "system/$label" >/dev/null 2>&1; then
