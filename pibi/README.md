@@ -54,6 +54,12 @@ ujust install-flatpaks
 separately. Launch Sayso, download a speech model, and use Ctrl+Alt+Space.
 Version 0.14.1 is pinned; `flatpak update` cannot update its upstream bundle.
 
+## Sidra
+
+`ujust install-flatpaks` includes Sidra. Run `ujust install-sidra` to install it
+separately, then launch Sidra and sign in to Apple Music. Version 1.2.1 is
+pinned; `flatpak update` cannot update its upstream bundle.
+
 ## Java Web Start
 
 Run `javaws path/to/file.jnlp`. Fedora provides IcedTea-Web; Adoptium's RPM
