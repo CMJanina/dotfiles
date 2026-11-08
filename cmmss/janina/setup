@@ -43,6 +43,7 @@ as_user() (
     sudo -H -u janina env -i HOME="$home" USER=janina LOGNAME=janina SHELL=/opt/homebrew/bin/bash \
         PATH="$home/.local/bin:/opt/homebrew/bin:$PATH" "$@" </dev/null
 )
+[[ -e $home/src || -L $home/src ]] || as_user ln -s /Volumes/src "$home/src"
 acl() {
     [[ $(ls -lde "$1") == *"user:janina $2"* ]] || chmod +a# 0 "user:janina $2" "$1"
 }
