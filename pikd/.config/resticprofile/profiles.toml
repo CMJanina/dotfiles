@@ -1,0 +1,26 @@
+version = "1"
+
+[default]
+repository = "/var/nas/home/pc-backup"
+password-command = "/home/linuxbrew/.linuxbrew/bin/op read op://Personal/pc_backup/password"
+compression = "better"
+run-before = "findmnt --noheadings --target /var/nas/home --types cifs,smb3 >/dev/null"
+
+[default.backup]
+source = ["/var", "/var/home"]
+exclude = ["/var/nas"]
+one-file-system = true
+schedule = "*-*-* 00,12:00:00"
+schedule-permission = "user_logged_on"
+
+[default.retention]
+after-backup = true
+prune = true
+keep-daily = 7
+keep-weekly = 4
+keep-monthly = 12
+
+[default.check]
+schedule = "*-*-* 01,13:00:00"
+schedule-permission = "user_logged_on"
+read-data-subset = "5%"

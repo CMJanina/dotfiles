@@ -1,5 +1,7 @@
 tap "ublue-os/tap"
 
+brew "resticprofile"
+
 cask "ublue-os/tap/vscodium-linux"
 cask "ublue-os/tap/1password-gui-linux"
 
