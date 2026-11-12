@@ -94,7 +94,7 @@ for directory in /var/opt/*/; do
     echo "L+ /var/opt/$name - - - - /usr/lib/opt/$name" >> /usr/lib/tmpfiles.d/opt-fix.conf
 done
 
-systemctl enable podman.socket bazzite-dx-groups.service
+systemctl enable podman.socket podman-restart.service bazzite-dx-groups.service
 
 echo 'import "/usr/share/ublue-os/just/95-bazzite-dx.just"' >> /usr/share/ublue-os/justfile
 
