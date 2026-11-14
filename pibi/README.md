@@ -79,6 +79,36 @@ ujust setup-virtualization vfio-on
 Follow the helper's device-binding instructions, then reboot. Existing VM
 configuration carries over when rebasing.
 
+## DaVinci Resolve
+
+Resolve is not packaged for Fedora, so it runs in a dedicated distrobox
+container, [davincibox](https://github.com/zelikos/davincibox), which ships
+`setup-davinci` and the launcher. The `opencl` image targets AMD and Intel
+GPUs. Download the current release from
+[Blackmagic](https://www.blackmagicdesign.com/support/), then
+run:
+
+```sh
+distrobox create -i ghcr.io/zelikos/davincibox-opencl:latest -n davincibox
+./DaVinci_Resolve_Studio_*_Linux.run --appimage-extract
+distrobox enter davincibox -- setup-davinci squashfs-root/AppRun distrobox
+rm -rf squashfs-root
+distrobox enter davincibox -- sudo dnf update
+```
+
+For Studio, add the FFMpeg encoder plugin for ffmpeg exports, from
+[ffmpeg_encoder_plugin](https://github.com/EdvinNilsson/ffmpeg_encoder_plugin).
+Enter the box once and run:
+
+```sh
+distrobox enter davincibox
+curl -LO https://github.com/EdvinNilsson/ffmpeg_encoder_plugin/releases/latest/download/ffmpeg_encoder_plugin.dvcp.bundle.zip
+unzip ffmpeg_encoder_plugin.dvcp.bundle.zip
+mkdir /opt/resolve/IOPlugins
+mv ffmpeg_encoder_plugin.dvcp.bundle /opt/resolve/IOPlugins/
+exit
+```
+
 ## Sources
 
 Adapted from
