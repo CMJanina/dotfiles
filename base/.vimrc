@@ -26,10 +26,7 @@ let g:lightline = {
 \       'colorscheme': 'powerlineish',
 \       'active': {
 \               'left': [ [ 'mode', 'paste' ],
-\                       [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-\       },
-\       'component_function': {
-\               'gitbranch': 'FugitiveHead',
+\                       [ 'readonly', 'filename', 'modified' ] ],
 \       },
 \}
 
@@ -49,11 +46,6 @@ let g:neoformat_enabled_markdown = ['denofmt']
 let g:neoformat_enabled_typescript = ['prettierd']
 
 autocmd BufEnter *.adn setfiletype clojure
-
-let g:ale_linters = {
-\   'cpp': ['clangd'],
-\   'c': ['clangd'],
-\}
 
 let g:vmt_fence_text = "toc"
 let g:vmt_fence_closing_text = "toc"
@@ -88,7 +80,7 @@ endif
 autocmd BufEnter *.rs set makeprg=cargo
 autocmd BufEnter *.rs map <Leader>x :w<CR>:!cargo build<CR>
 
-autocmd BufEnter *.swift set makeprg="PATH=/usr/bin swift"
+autocmd BufEnter *.swift let &makeprg = 'PATH=/usr/bin swift'
 autocmd BufEnter *.swift map <Leader>x :w<CR>:!PATH=/usr/bin swift build<CR>
 
 autocmd BufEnter *.hs set makeprg=cabal
@@ -117,8 +109,6 @@ map <Leader>Z :set nospell<CR><C-L>
 
 autocmd FileType gitcommit :set spell
 autocmd FileType markdown :set spell
-
-map <Leader>d :ALEDetail<CR>
 
 map <Leader>bn :bnext<CR><C-L>
 map <Leader>bp :bprevious<CR><C-L>
