@@ -1,6 +1,3 @@
-[submodule "vim/.vim/pack/git-plugins/start/denops.vim"]
-	path = base/.vim/pack/git-plugins/start/denops.vim
-	url = https://github.com/vim-denops/denops.vim.git
 [submodule "vim/.vim/pack/git-plugins/start/lightline.vim"]
 	path = base/.vim/pack/git-plugins/start/lightline.vim
 	url = https://github.com/itchyny/lightline.vim.git
@@ -13,18 +10,12 @@
 [submodule "vim/.vim/pack/git-plugins/start/vim-openscad"]
 	path = base/.vim/pack/git-plugins/start/vim-openscad
 	url = https://github.com/sirtaj/vim-openscad.git
-[submodule "vim/.vim/pack/git-plugins/start/plenary.nvim"]
-	path = base/.vim/pack/git-plugins/start/plenary.nvim
-	url = https://github.com/nvim-lua/plenary.nvim.git
 [submodule "vim/.vim/pack/git-plugins/start/vim-pitch-black"]
 	path = base/.vim/pack/git-plugins/start/vim-pitch-black
 	url = https://github.com/pixelcmtd/vim-pitch-black.git
 [submodule "vim/.vim/pack/git-plugins/start/rainbow_parentheses.vim"]
 	path = base/.vim/pack/git-plugins/start/rainbow_parentheses.vim
 	url = https://github.com/junegunn/rainbow_parentheses.vim.git
-[submodule "vim/.vim/pack/git-plugins/start/nvim-treesitter"]
-	path = base/.vim/pack/git-plugins/start/nvim-treesitter
-	url = https://github.com/nvim-treesitter/nvim-treesitter.git
 [submodule "base/.vim/pack/git-plugins/start/vim-sleuth"]
 	path = base/.vim/pack/git-plugins/start/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth.git
