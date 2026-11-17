@@ -19,6 +19,7 @@ dnf5 install -y \
     numactl \
     podman-machine \
     podman-tui \
+    proxmark3 \
     python3-ramalama \
     restic \
     rclone \
