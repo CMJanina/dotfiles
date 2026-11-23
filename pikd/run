@@ -53,6 +53,7 @@ plasma-apply-cursortheme macOS
 kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key library --notify org.kde.kwin.aurorae.v2
 kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme --notify __aurorae__svg__Obsidian.Dark
 
+unset SUDO_ASKPASS
 brew bundle -v
 
 cd .. && ./run kilobase
