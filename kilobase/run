@@ -1,20 +1,21 @@
 #!/bin/sh
 set -uxe
 
-cd .. && ./run base && cd kilobase
+cd ..
+./run base
+cd kilobase
 
 brew analytics off
-brew bundle install -v --jobs 1
+brew bundle install -v
 
 dart pub global activate fvm
 dart pub global run fvm:main install stable
 
 gh api /user/memberships/orgs --jq 'map(.organization.login) + ["'"$(gh api /user --jq .login)"'", "CMJanina"] | join("\n")' | \
     grep -Ev 'EpicGames|tldr-pages' | \
-    xe -j0 -- gh repo list -L 1000 --no-archived --json owner,name --jq 'map(.owner.login + "/" + .name) | map([., .]) | flatten | join("\n")' | \
-    xe -N2 sh -c '[ -d ~/src/$2 ] || echo "gh repo clone $1 ~/src/$2 -- --recurse-submodules -qv"' -s | \
-    sort | uniq | \
-    xe -vj10 sh -c
+    xe -j0 -L -- gh repo list -L 1000 --no-archived --json owner,name --jq 'map(.owner.login + "/" + .name) | join("\n")' | \
+    sort -u | \
+    xe -vj10 -s '[ -d ~/src/$1 ] || gh repo clone $1 ~/src/$1 -- --recurse-submodules -qv'
 
 mkdir -p "$HOME/.local/share/helix"
 gh api /user/memberships/orgs --jq 'map(.organization.login) + ["'"$(gh api /user --jq .login)"'"] | join("\n")' | \
