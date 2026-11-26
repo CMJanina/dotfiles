@@ -214,6 +214,15 @@ ght() (git tag "$@" && git push origin --tags)
 glcp() (git pull && git commit "$@" && git push)
 ghcl() (git clone --recurse-submodules -v https://github.com/$1.git $2 $3 $4)
 
+yt-meme() {
+        if (( $# < 2 )); then
+                echo 'Usage: yt-meme <timestamped-url> <duration>' >&2
+                return 1
+        fi
+
+        yt-dlp --download-sections '*from-url' --downloader-args "ffmpeg_o:-t ${(q)2}" -f b -- "$1"
+}
+
 eval "$(zsh-patina activate)"
 
 ! type pfetch >/dev/null || pfetch
